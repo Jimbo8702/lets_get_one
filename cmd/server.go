@@ -31,7 +31,9 @@ func main() {
 		app 	= api.New(db, ls, vd, sess, render)
 	)
 
-	app.Init()
+
+ 	app.Init()
+
 	app.ListenAndServe(config.Port)
 }
 

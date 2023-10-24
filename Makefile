@@ -35,7 +35,7 @@ docdown:
 stop:
 	@echo "Stopping Application..."
 	@-pkill -SIGTERM -f "./bin/${BINARY_NAME}"
-	@echo "Stopped Celeritas!"	
+	@echo "Stopped Application!"	
 
 start: run
 

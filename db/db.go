@@ -9,7 +9,8 @@ import (
 )
 
 type Store struct {
-	User UserStore
+	User 	UserStore
+	Token 	TokenStore
 }
 
 func New(dsn string) (*Store, error) {
@@ -18,8 +19,10 @@ func New(dsn string) (*Store, error) {
 		return nil, err
 	}
 	us := NewPostgresUserStore(pqsql)
+	ts := NewPostgresTokenStore(pqsql)
 	return &Store{
 		User: us,
+		Token: ts,
 	}, nil
 }
 

@@ -34,6 +34,7 @@ func New(db *db.Store, ls *slog.Logger, vd validator.Validator, sess *scs.Sessio
 	}
 }
 
+
 func (a *API) Init() {
 	mux := chi.NewRouter()
 	mux.Use(middleware.RequestID)
@@ -43,12 +44,8 @@ func (a *API) Init() {
 	//	add our session middleware
 	mux.Use(a.SessionLoad)
 
-	a.router = mux
-	a.AddPageRoutes()
-
-	// static routes
-	fileServer := http.FileServer(http.Dir("./public"))
-	a.router.Handle("/public/*", http.StripPrefix("/public", fileServer))
+	routes := a.routes(mux)
+	a.router = routes
 }
 
 func (a *API) ListenAndServe(port string) {

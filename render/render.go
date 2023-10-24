@@ -50,6 +50,13 @@ func New(sess *scs.SessionManager, config *util.Config) Renderer {
 	}
 }
 
+func (c *JetRenderer) checkAuth(td *TemplateData, r *http.Request) *TemplateData {
+	if c.Session.Exists(r.Context(), "userID") {
+		td.IsAuthenticated = true
+	}
+	return td
+}
+
 func (c *JetRenderer) Page(w http.ResponseWriter, r *http.Request, templateName string, variables, data interface{}) error {
 	var vars jet.VarMap
 
@@ -78,9 +85,3 @@ func (c *JetRenderer) Page(w http.ResponseWriter, r *http.Request, templateName 
 	return nil
 }
 
-func (c *JetRenderer) checkAuth(td *TemplateData, r *http.Request) *TemplateData {
-	if c.Session.Exists(r.Context(), "userID") {
-		td.IsAuthenticated = true
-	}
-	return td
-}

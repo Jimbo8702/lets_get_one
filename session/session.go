@@ -20,7 +20,14 @@ type Session struct {
 }
 
 func New(con *util.Config) *scs.SessionManager {
-	sess := &Session{}
+	sess := &Session{
+		CookieLifetime: con.CookieLifetime,
+		CookiePersist: con.CookiePersist,
+		CookieName: con.CookieName,
+		CookieDomain: con.CookieDomain,
+		CookieSecure: con.CookieSecure,
+		SessionType: con.SessionType,
+	}
 	return sess.init()
 }
 
@@ -54,14 +61,14 @@ func(c *Session) init() *scs.SessionManager {
 	session.Cookie.SameSite = http.SameSiteLaxMode
 
 	// which session store?
-	switch strings.ToLower(c.SessionType) {
-	case "redis":
-		//
-	case "postgres", "postgresql":
-		//
-	default:
-		//cookie
-	}
+	// switch strings.ToLower(c.SessionType) {
+	// case "redis":
+	// 	//
+	// case "postgres", "postgresql":
+	// 	//
+	// default:
+	// 	//cookie
+	// }
 
 	return session
 }

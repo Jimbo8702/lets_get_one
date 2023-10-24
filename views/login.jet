@@ -9,7 +9,7 @@
 
 <hr>
 
-<form method="post" action="/users/login"
+<form method="post" action="/api/users/login"
     name="login-form"
     id="login-form"
     class="d-block needs-validation"
