@@ -1,24 +1,42 @@
+BINARY_NAME=letsGetItOne
+
 build:
-	@go build -o bin/app ./cmd
+	@go mod vendor
+	@echo "Building Application..."
+	@go build -o bin/${BINARY_NAME} ./cmd
+	@echo "Application built!"
 
 run: build
-	@./bin/app
-test: 
-	@go test -v ./...
+	@echo "Starting Application..."
+	@./bin/${BINARY_NAME} &
+	@echo "Application started!"
 
-postgres: 
-	docker run --name postgres20 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
+clean:
+	@echo "Cleaning..."
+	@go clean
+	@rm bin/${BINARY_NAME}
+	@echo "Cleaned!"
 
-db: 
-	docker exec -it postgres20 createdb --username=root --owner=root temp_simple
+test:
+	@echo "Testing..."
+	@go test ./...
+	@echo "Done!"
 
-drop: 
-	docker exec -it postgres20 dropdb temp_simple
+docup:
+	@echo "Starting docker containers..."
+	@docker-compose up -d
+	@echo "All containers ready!"
 
-migrateup:
-	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/temp_simple?sslmode=disable" -verbose up
+docdown: 
+	@echo "Stopping docker containers..."
+	@docker-compose down
+	@echo "All containers stopped!"
 
-migratedown:
-	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/temp_simple?sslmode=disable" -verbose down
+stop:
+	@echo "Stopping Application..."
+	@-pkill -SIGTERM -f "./bin/${BINARY_NAME}"
+	@echo "Stopped Celeritas!"	
 
-.PHONY: postgres db drop migrateup migratedown 
+start: run
+
+restart: stop start

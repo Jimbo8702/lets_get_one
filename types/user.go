@@ -25,6 +25,6 @@ type SignupParams struct {
 }
 
 type LoginParams struct {
-	Email 		string `params:"email"`
+	Email 		string 	`params:"email"`
 	Password 	string	`params:"required"`
 }
